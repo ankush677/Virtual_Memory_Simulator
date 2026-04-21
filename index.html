@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VMMS — Virtual Memory Management Simulator</title>
+  <link rel="stylesheet" href="main.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+</head>
+<body>
+
+<div class="app-wrapper">
+
+ 
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">⬡</span>
+      <h1>VIRTUAL MEMORY<br>MANAGEMENT SIM</h1>
+      <p>v1.0 · OS Concepts Lab</p>
+    </div>
+
+    <div class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <button class="nav-link active" data-nav="dashboard">
+        <span class="nav-icon">⬡</span> Dashboard
+      </button>
+      <button class="nav-link" data-nav="paging">
+        <span class="nav-icon">▦</span> Paging Simulator
+      </button>
+
+      <div class="nav-section-label">Memory Models</div>
+      <button class="nav-link" data-nav="segmentation">
+        <span class="nav-icon">▤</span> Segmentation
+      </button>
+      <button class="nav-link" data-nav="fragmentation">
+        <span class="nav-icon">▥</span> Fragmentation
+      </button>
+
+      <div class="nav-section-label">Analysis</div>
+      <button class="nav-link" data-nav="comparison">
+        <span class="nav-icon">◧</span> Algo Comparison
+      </button>
+      <button class="nav-link" data-nav="theory">
+        <span class="nav-icon">◈</span> Theory & Help
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      OS CONCEPTS · VMMS · 2025<br>Page Replacement Algorithms
+    </div>
+  </nav>
+
+ 
+  <div class="main-content">
+
+  
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <span class="topbar-title" id="section-title">Dashboard</span>
+      </div>
+      <div class="topbar-right">
+        <span class="status-dot">SIMULATOR ONLINE</span>
+      </div>
+    </header>
+
+    <div class="content-area">
+
+<section id="sec-dashboard">
+  <div class="dash-hero">
+    <h2>VIRTUAL MEMORY<br>MANAGEMENT SIMULATOR</h2>
+    <p>An interactive platform to understand paging, page replacement algorithms, segmentation, and memory fragmentation through step-by-step animated simulation and real-time analytics.</p>
+    <div class="feature-chips">
+      <span class="chip chip-cyan">FIFO Algorithm</span>
+      <span class="chip chip-magenta">LRU Algorithm</span>
+      <span class="chip chip-green">Optimal Algorithm</span>
+      <span class="chip chip-amber">Segmentation</span>
+      <span class="chip chip-purple">Fragmentation</span>
+      <span class="chip chip-cyan">Algorithm Comparison</span>
+    </div>
+  </div>
+
+  <div class="section-divider"><h3>Quick Stats — Default Reference String (3 Frames)</h3></div>
+
+  <div class="stat-cards">
+    <div class="stat-card">
+      <div class="stat-label">Ref String Len</div>
+      <div class="stat-value cyan" id="dash-total-pages">—</div>
+      <div class="stat-sub">pages</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">FIFO Faults</div>
+      <div class="stat-value magenta" id="dash-fifo-faults">—</div>
+      <div class="stat-sub">page faults</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">LRU Faults</div>
+      <div class="stat-value cyan" id="dash-lru-faults">—</div>
+      <div class="stat-sub">page faults</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Optimal Faults</div>
+      <div class="stat-value green" id="dash-opt-faults">—</div>
+      <div class="stat-sub">page faults</div>
+    </div>
+  </div>
+
+  <div class="section-divider"><h3>What You Can Simulate</h3></div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title">▦ Paging Simulator</div>
+      <p style="color:var(--text-secondary);font-size:13px;">Enter a reference string and frame count. Run FIFO, LRU, or Optimal algorithm step-by-step with animated frame boxes and a full step history table.</p>
+      <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="navigate('paging')">Open Simulator →</button>
+    </div>
+    <div class="card">
+      <div class="card-title">▤ Segmentation</div>
+      <p style="color:var(--text-secondary);font-size:13px;">Define memory segments (Code, Stack, Heap, Data). See their base/limit addresses, detect segmentation faults, and visualize the memory layout.</p>
+      <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="navigate('segmentation')">Open Simulator →</button>
+    </div>
+    <div class="card">
+      <div class="card-title">▥ Fragmentation</div>
+      <p style="color:var(--text-secondary);font-size:13px;">Simulate internal and external fragmentation with fixed-size block partitioning. See exactly how much memory is wasted and why.</p>
+      <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="navigate('fragmentation')">Open Simulator →</button>
+    </div>
+    <div class="card">
+      <div class="card-title">◧ Algorithm Comparison</div>
+      <p style="color:var(--text-secondary);font-size:13px;">Run all three page replacement algorithms simultaneously on the same input. Compare faults, hits, and efficiency. Charts included.</p>
+      <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="navigate('comparison')">Compare Now →</button>
+    </div>
+    <div class="card">
+      <div class="card-title">◈ Theory & Viva Help</div>
+      <p style="color:var(--text-secondary);font-size:13px;">Review key virtual memory concepts, algorithm explanations, and interactive Q&A viva preparation with expandable answers.</p>
+      <button class="btn btn-secondary btn-sm" style="margin-top:12px" onclick="navigate('theory')">Study Now →</button>
+    </div>
+    <div class="card">
+      <div class="card-title">⬡ Demand Paging</div>
+      <p style="color:var(--text-secondary);font-size:13px;">Pages are loaded only when referenced (on-demand). Each page fault in the simulator represents a demand paging event where the OS loads the page from disk.</p>
+      <div style="margin-top:12px;font-size:11px;font-family:var(--font-mono);color:var(--cyan);">Built into Paging Simulator</div>
+    </div>
+  </div>
+</section>
+
+
+<section id="sec-paging" class="hidden">
+  <div class="section-header">
+    <h2>Paging Simulator</h2>
+    <p>Simulate FIFO · LRU · Optimal page replacement with step-by-step visualization</p>
+  </div>
+
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">Simulation Input</div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Number of Frames</label>
+        <input type="number" id="pg-frames" class="form-input" min="1" max="10" placeholder="e.g. 3">
+      </div>
+      <div class="form-group" style="flex:3;">
+        <label class="form-label">Page Reference String</label>
+        <input type="text" id="pg-ref" class="form-input" placeholder="e.g. 7 0 1 2 0 3 0 4 2 3 0 3 2">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Select Algorithm</label>
+      <div class="btn-group">
+        <button class="alg-btn" data-alg="FIFO"    onclick="selectAlgorithm('FIFO')">FIFO</button>
+        <button class="alg-btn" data-alg="LRU"     onclick="selectAlgorithm('LRU')">LRU</button>
+        <button class="alg-btn" data-alg="Optimal" onclick="selectAlgorithm('Optimal')">Optimal</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Playback Speed: <span id="speed-label">800ms</span></label>
+      <input type="range" id="pg-speed" min="200" max="2000" step="100" value="800"
+        oninput="document.getElementById('speed-label').textContent = this.value + 'ms'">
+    </div>
+
+    <div class="btn-group" style="margin-top:4px;">
+      <button class="btn btn-primary" onclick="runPagingSimulation()">▶ Run Simulation</button>
+      <button class="btn btn-danger"  onclick="resetPaging()">↺ Reset</button>
+      <button class="btn btn-success" onclick="exportResults()">⬇ Export CSV</button>
+    </div>
+  </div>
+
+  <div id="paging-output" class="hidden">
+
+    
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="stat-label">Total Pages</div>
+        <div class="stat-value cyan" id="stat-total">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Page Faults</div>
+        <div class="stat-value magenta" id="stat-faults">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Page Hits</div>
+        <div class="stat-value green" id="stat-hits">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Fault Rate</div>
+        <div class="stat-value amber" id="stat-fault-rate">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Hit Rate</div>
+        <div class="stat-value cyan" id="stat-hit-rate">—</div>
+      </div>
+    </div>
+
+    <div class="grid-2-1" style="gap:20px;">
+
+      <div>
+        <div class="section-divider"><h3>Frame State</h3></div>
+
+        
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="step-progress" style="width:0%"></div>
+        </div>
+        <div class="step-counter" id="step-counter">Step — / —</div>
+
+        
+        <div class="frame-boxes" id="frame-boxes"></div>
+
+        
+        <div class="step-info" id="step-info">Run a simulation to see step details here.</div>
+
+      
+        <div class="btn-group" style="margin-top:14px; justify-content:center;">
+          <button class="btn btn-secondary btn-sm" id="btn-first" onclick="stepFirst()">|◀</button>
+          <button class="btn btn-secondary btn-sm" id="btn-prev"  onclick="stepPrev()">◀ Prev</button>
+          <button class="btn btn-primary   btn-sm" id="btn-play"  onclick="startPlay()">▶ Play</button>
+          <button class="btn btn-danger    btn-sm hidden" id="btn-pause" onclick="stopPlay()">⏸ Pause</button>
+          <button class="btn btn-secondary btn-sm" id="btn-next"  onclick="stepNext()">Next ▶</button>
+          <button class="btn btn-secondary btn-sm" id="btn-last"  onclick="stepLast()">▶|</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="section-divider"><h3>Step History</h3></div>
+        <div class="table-wrap" style="max-height:380px;overflow-y:auto;">
+          <table>
+            <thead id="step-thead"></thead>
+            <tbody id="step-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="sec-segmentation" class="hidden">
+  <div class="section-header">
+    <h2>Segmentation Simulator</h2>
+    <p>Model logical memory segments and detect segmentation faults</p>
+  </div>
+
+  <div class="grid-2">
+ 
+    <div class="card">
+      <div class="card-title">Segment Configuration</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Total Memory (KB)</label>
+          <input type="number" id="seg-memory" class="form-input" value="512" min="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Number of Segments</label>
+          <select id="seg-count" class="form-input">
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-divider" style="margin:12px 0 10px;"><h3>Segment Definitions</h3></div>
+      <div style="margin-bottom:6px;display:flex;gap:10px;font-size:10px;font-family:var(--font-display);color:var(--text-muted);padding-left:60px;">
+        <span style="flex:1">NAME</span><span style="flex:1">SIZE (KB)</span>
+      </div>
+      <div id="seg-rows"></div>
+
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="runSegmentation()">▶ Simulate</button>
+        <button class="btn btn-danger"  onclick="document.getElementById('seg-output').classList.add('hidden')">↺ Clear</button>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="card">
+      <div class="card-title">About Segmentation</div>
+      <p style="color:var(--text-secondary);font-size:13px;line-height:1.8;">
+        Segmentation divides memory into <span style="color:var(--cyan)">logical units</span> called segments — Code, Stack, Heap, Data, etc. Each segment has a <b>base address</b> and a <b>limit (size)</b>.
+      </p>
+      <br>
+      <p style="color:var(--text-secondary);font-size:13px;line-height:1.8;">
+        A <span style="color:var(--magenta)">Segmentation Fault</span> occurs when a process tries to access memory outside its allocated segment, or when there isn't enough contiguous memory for the segment.
+      </p>
+      <div style="margin-top:16px;" class="formula-box">
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--cyan);background:rgba(0,212,255,0.06);border-left:3px solid var(--cyan);padding:10px 12px;border-radius:0 6px 6px 0;">
+          Physical Address = Base[s] + Offset<br>
+          Valid if: Offset &lt; Limit[s]<br>
+          Else: SEGMENTATION FAULT
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Output -->
+  <div id="seg-output" class="hidden" style="margin-top:20px;">
+    <div class="section-divider"><h3>Memory Visualization</h3></div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title">Memory Layout Strip</div>
+      <div class="seg-visual" id="seg-visual"></div>
+      <div style="display:flex;gap:16px;margin-top:10px;font-size:11px;font-family:var(--font-mono);">
+        <span><span style="color:var(--cyan)">■</span> Allocated</span>
+        <span><span style="color:var(--magenta)">■</span> Fault</span>
+        <span><span style="color:var(--text-muted)">■</span> Free</span>
+      </div>
+    </div>
+
+    <div class="grid-3" style="margin-bottom:16px;">
+      <div class="stat-card">
+        <div class="stat-label">Used Memory</div>
+        <div class="stat-value cyan" id="seg-used">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Free Memory</div>
+        <div class="stat-value green" id="seg-free">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Utilization</div>
+        <div class="stat-value amber" id="seg-util">—</div>
+      </div>
+    </div>
+
+    <div class="section-divider"><h3>Segment Table</h3></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Segment Name</th>
+            <th>Size (KB)</th>
+            <th>Base Addr</th>
+            <th>End Addr</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="seg-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="sec-fragmentation" class="hidden">
+  <div class="section-header">
+    <h2>Memory Fragmentation Simulator</h2>
+    <p>Visualize internal and external fragmentation with fixed-size block partitioning</p>
+  </div>
+
+  <div class="grid-2">
+    <!-- Input -->
+    <div class="card">
+      <div class="card-title">Partition Configuration</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Total Blocks</label>
+          <input type="number" id="frag-total" class="form-input" value="16" min="1" max="64">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Block Size (KB)</label>
+          <input type="number" id="frag-blocksize" class="form-input" value="16" min="1">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Num Processes</label>
+          <select id="frag-count" class="form-input">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4" selected>4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="section-divider" style="margin:12px 0 10px;"><h3>Process Allocations</h3></div>
+      <div style="margin-bottom:6px;display:flex;gap:10px;font-size:10px;font-family:var(--font-display);color:var(--text-muted);padding-left:30px;">
+        <span style="flex:1">NAME</span><span style="flex:1">REQUESTED (KB)</span>
+      </div>
+      <div id="frag-rows"></div>
+
+      <div class="btn-group" style="margin-top:16px;">
+        <button class="btn btn-primary" onclick="runFragmentation()">▶ Simulate</button>
+        <button class="btn btn-danger"  onclick="document.getElementById('frag-output').classList.add('hidden')">↺ Clear</button>
+      </div>
+    </div>
+
+   
+    <div class="card">
+      <div class="card-title">Fragmentation Types</div>
+      <div style="margin-bottom:16px;">
+        <div style="font-family:var(--font-display);font-size:11px;color:var(--cyan);margin-bottom:6px;letter-spacing:0.08em;">INTERNAL FRAGMENTATION</div>
+        <p style="color:var(--text-secondary);font-size:13px;line-height:1.7;">Wasted space <b>inside</b> an allocated partition when the process is smaller than the block size. The remaining space cannot be used by any other process.</p>
+      </div>
+      <div>
+        <div style="font-family:var(--font-display);font-size:11px;color:var(--magenta);margin-bottom:6px;letter-spacing:0.08em;">EXTERNAL FRAGMENTATION</div>
+        <p style="color:var(--text-secondary);font-size:13px;line-height:1.7;">Total free memory is enough to satisfy a request, but the free space is <b>not contiguous</b>. It is scattered in small pieces between allocations.</p>
+      </div>
+      <div style="margin-top:12px;font-family:var(--font-mono);font-size:11px;color:var(--amber);background:rgba(255,179,71,0.06);border-left:3px solid var(--amber);padding:10px 12px;border-radius:0 6px 6px 0;">
+        Internal Frag = Allocated − Requested<br>
+        Blocks Needed = ⌈Requested / BlockSize⌉
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="frag-output" class="hidden" style="margin-top:20px;">
+
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="stat-label">Total Memory</div>
+        <div class="stat-value cyan" id="frag-total-size">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Requested</div>
+        <div class="stat-value green" id="frag-used-val">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Internal Frag</div>
+        <div class="stat-value magenta" id="frag-wasted-val">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">External Free</div>
+        <div class="stat-value purple" id="frag-free-val">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Int. Frag %</div>
+        <div class="stat-value amber" id="frag-int-pct">—</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Ext. Free %</div>
+        <div class="stat-value cyan" id="frag-ext-pct">—</div>
+      </div>
+    </div>
+
+    <div class="section-divider"><h3>Block Grid Visualization</h3></div>
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">Memory Blocks — <span style="color:var(--cyan)">Used</span> · <span style="color:var(--magenta)">Wasted (Int. Frag)</span> · <span style="color:var(--text-muted)">Free</span></div>
+      <div id="frag-visual"></div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Partition Table</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Process</th>
+                <th>Requested</th>
+                <th>Allocated</th>
+                <th>Wasted</th>
+                <th>Blocks</th>
+              </tr>
+            </thead>
+            <tbody id="frag-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Memory Distribution</div>
+        <div class="chart-container">
+          <canvas id="memoryPieChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <div class="card-title">Internal Fragmentation per Process</div>
+      <div class="chart-container" style="height:200px;">
+        <canvas id="fragChart"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section id="sec-comparison" class="hidden">
+  <div class="section-header">
+    <h2>Algorithm Comparison</h2>
+    <p>Run FIFO, LRU, and Optimal simultaneously — find the best performer</p>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title">Input Configuration</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Number of Frames</label>
+        <input type="number" id="cmp-frames" class="form-input" value="3" min="1" max="10">
+      </div>
+      <div class="form-group" style="flex:3;">
+        <label class="form-label">Page Reference String</label>
+        <input type="text" id="cmp-ref" class="form-input" placeholder="e.g. 7 0 1 2 0 3 0 4 2 3 0 3 2">
+      </div>
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="runComparison()">▶ Compare All</button>
+    </div>
+  </div>
+
+  <div id="cmp-output" class="hidden">
+
+   
+    <div class="card" style="background:rgba(0,255,136,0.06);border-color:rgba(0,255,136,0.3);margin-bottom:20px;">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="font-size:40px;line-height:1;">🏆</div>
+        <div>
+          <div style="font-family:var(--font-display);font-size:10px;letter-spacing:0.12em;color:var(--text-muted);margin-bottom:4px;">BEST ALGORITHM</div>
+          <div style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--green);text-shadow:0 0 18px #00ff8866;" id="cmp-best-name">—</div>
+          <div style="font-size:12px;font-family:var(--font-mono);color:var(--text-secondary);margin-top:4px;">
+            <span id="cmp-best-faults">—</span> page faults · <span id="cmp-best-rate">—</span> hit rate
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-title">Results Summary</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Algorithm</th>
+              <th>Page Faults</th>
+              <th>Page Hits</th>
+              <th>Fault Rate</th>
+              <th>Hit Rate</th>
+            </tr>
+          </thead>
+          <tbody id="cmp-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Faults vs Hits Comparison</div>
+        <div class="chart-container">
+          <canvas id="comparisonChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Cumulative Fault Trend</div>
+        <div class="chart-container">
+          <canvas id="faultTrendChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="sec-theory" class="hidden">
+  <div class="section-header">
+    <h2>Theory & Viva Help</h2>
+    <p>Key concepts, algorithm explanations, and exam preparation</p>
+  </div>
+
+  <div class="section-divider"><h3>Core Concepts</h3></div>
+
+  <div class="theory-card">
+    <h4>▦ VIRTUAL MEMORY</h4>
+    <p>Virtual memory is a memory management technique that provides an idealized abstraction of the storage resources on a system. It gives each process the illusion of having a large, contiguous block of memory, even though physical RAM may be limited or fragmented. The OS maps virtual addresses to physical addresses using a page table.</p>
+    <div class="formula">Virtual Address Space &gt;&gt; Physical RAM<br>OS manages the mapping + swapping to/from disk</div>
+  </div>
+
+  <div class="theory-card">
+    <h4>▦ PAGING</h4>
+    <p>Paging divides logical memory into fixed-size blocks called <b>pages</b>, and physical memory into equally-sized <b>frames</b>. Pages are mapped to frames via a <b>page table</b>. When a process accesses a page not currently in a frame, a <b>page fault</b> occurs, and the OS loads the page from secondary storage (disk/swap).</p>
+    <div class="formula">Page Fault Rate = Faults / Total References<br>Hit Rate = 1 − Fault Rate</div>
+  </div>
+
+  <div class="theory-card">
+    <h4>▦ DEMAND PAGING</h4>
+    <p>In demand paging, pages are not pre-loaded. A page is loaded into memory <b>only when it is first accessed</b> (demanded). If the page is absent, a page fault is triggered. This avoids loading unnecessary pages and allows processes larger than physical RAM to run. Each page fault in this simulator represents a demand paging load event.</p>
+  </div>
+
+  <div class="theory-card">
+    <h4>▦ FIFO (First In, First Out)</h4>
+    <p>FIFO replaces the page that has been in memory the <b>longest</b>. A queue tracks insertion order. The oldest page is at the front and is evicted on a fault. Simple to implement but suffers from <b>Bélády's Anomaly</b> — more frames can sometimes cause more page faults.</p>
+    <div class="formula">Evict: oldest page in queue → replace with new page</div>
+  </div>
+
+  <div class="theory-card">
+    <h4>▦ LRU (Least Recently Used)</h4>
+    <p>LRU replaces the page that was <b>least recently used</b>. It uses recency of access as a proxy for future use. When a fault occurs, the page with the longest time since last access is evicted. LRU is a practical, widely-used algorithm that performs well in real workloads. It requires tracking usage history (timestamps or stack).</p>
+    <div class="formula">Evict: page with oldest last-use timestamp</div>
+  </div>
+
+  <div class="theory-card">
+    <h4>▦ OPTIMAL (Bélády's Algorithm)</h4>
+    <p>Optimal replaces the page that will <b>not be used for the longest time</b> in the future. It requires knowing the entire future reference string in advance, making it impractical for real systems. However, it serves as a theoretical benchmark — the minimum possible page faults for any algorithm given the same inputs.</p>
+    <div class="formula">Evict: page whose next use is farthest in the future (or never used again)</div>
+  </div>
+
+  <div class="theory-card">
+    <h4>▦ SEGMENTATION</h4>
+    <p>Segmentation divides a process's logical address space into variable-sized <b>segments</b> (Code, Data, Stack, Heap). Each segment has a base address and a limit. Segmentation reflects the programmer's view of memory and supports protection and sharing per segment. A <b>segmentation fault</b> occurs when access is outside a valid segment.</p>
+    <div class="formula">Physical Address = Segment Base + Offset<br>Condition: Offset &lt; Segment Limit</div>
+  </div>
+
+  <div class="theory-card">
+    <h4>▦ MEMORY FRAGMENTATION</h4>
+    <p><b>Internal fragmentation</b> occurs when allocated memory is larger than needed (fixed-size partitions waste the leftover space). <b>External fragmentation</b> occurs when there's enough total free memory for a request, but it's scattered in non-contiguous pieces. Compaction, paging, and segmentation can help mitigate external fragmentation.</p>
+    <div class="formula">Internal Frag = Allocated Block − Requested Size<br>External Frag = Scattered free blocks that can't be used</div>
+  </div>
+
+  <div class="section-divider"><h3>Viva Questions & Answers</h3></div>
+
+  <div id="qa-list">
+  
+  </div>
+</section>
+
+    </div>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<script src="algorithms.js"></script>
+<script src="charts.js"></script>
+<script src="app.js"></script>
+<script>
+
+const vivaQA = [
+  {
+    q: "What is a page fault and how does the OS handle it?",
+    a: "A page fault occurs when a process accesses a virtual page that is not currently present in physical memory frames. The CPU generates a trap to the OS. The OS looks up the page table, finds the page on disk (swap space), selects a victim frame (using a replacement algorithm), writes the victim to disk if dirty, loads the requested page into the freed frame, updates the page table, and restarts the faulting instruction."
+  },
+  {
+    q: "What is Bélády's Anomaly?",
+    a: "Bélády's Anomaly is a phenomenon in FIFO page replacement where adding more physical frames can actually increase the number of page faults for certain reference strings. This seems counterintuitive — normally more frames means fewer faults. LRU and Optimal do NOT suffer from this anomaly; they belong to a class called 'stack algorithms' that guarantee page faults never increase with more frames."
+  },
+  {
+    q: "Why is the Optimal algorithm not used in real operating systems?",
+    a: "The Optimal (Bélády's) algorithm requires knowing the entire future sequence of page references in advance, which is impossible in a real system because future references depend on user behavior and data at runtime. It serves as a theoretical benchmark to compare how well practical algorithms (FIFO, LRU) perform relative to the best possible outcome."
+  },
+  {
+    q: "How does LRU differ from FIFO?",
+    a: "FIFO evicts the page that has been in memory the longest (oldest insertion time), regardless of how recently it was used. LRU evicts the page that was accessed least recently (oldest usage time). LRU typically performs better because recently-used pages are more likely to be used again (temporal locality). FIFO ignores recency of access entirely."
+  },
+  {
+    q: "What is the difference between paging and segmentation?",
+    a: "Paging divides memory into fixed-size units (pages/frames), is transparent to the programmer, and eliminates external fragmentation but causes internal fragmentation. Segmentation divides memory into variable-size logical units (segments like code, stack, heap), reflects the programmer's view, supports protection/sharing per segment, but can cause external fragmentation. Modern systems often combine both (segmented paging)."
+  },
+  {
+    q: "What is thrashing and how is it prevented?",
+    a: "Thrashing occurs when a process has too few frames and spends more time page faulting and swapping pages than executing instructions. The CPU utilization drops dramatically. Prevention techniques include: Working Set Model (allocate frames based on the working set of actively used pages), Page Fault Frequency (adjust frames based on fault rate), and load control (suspend some processes to give others enough frames)."
+  },
+  {
+    q: "Explain the difference between internal and external fragmentation.",
+    a: "Internal fragmentation is wasted space inside an allocated memory block — when a process is allocated more memory than it needs (common in fixed-size partitions). External fragmentation is free memory that exists between allocated blocks but is too small or non-contiguous to be used for new allocations. Paging eliminates external fragmentation but introduces internal fragmentation; variable-size partitions can cause external fragmentation."
+  },
+  {
+    q: "What is demand paging? How does it differ from pre-paging?",
+    a: "In demand paging, a page is loaded into memory only when it is first accessed (demanded by the process), causing a page fault. This is the most common approach and conserves memory by not loading unused pages. In pre-paging, the OS proactively loads pages it predicts will be needed soon (e.g., on process startup, loading neighboring pages). Pre-paging trades potential wasted loads for fewer future faults."
+  },
+  {
+    q: "What information does a page table entry typically contain?",
+    a: "A page table entry (PTE) typically contains: the frame number (physical address base), a valid/present bit (is the page in RAM?), a dirty/modified bit (has the page been written to?), a reference/accessed bit (has it been read/written recently?), protection bits (read/write/execute permissions), and sometimes a caching policy bit."
+  },
+  {
+    q: "What is a TLB and why is it important?",
+    a: "A Translation Lookaside Buffer (TLB) is a hardware cache for page table entries. Without it, every memory access requires two memory accesses — one to look up the page table and one for the actual data. The TLB caches recent virtual-to-physical address translations, so most accesses (TLB hits) resolve in one cycle. The TLB hit rate is critical for performance; modern systems achieve >99% hit rates due to spatial and temporal locality."
+  },
+];
+
+
+const qaList = document.getElementById('qa-list');
+if (qaList) {
+  vivaQA.forEach((item, i) => {
+    qaList.innerHTML += `
+    <div class="qa-item" id="qa-${i}">
+      <div class="qa-question" onclick="toggleQA(${i})">
+        <span>Q${i+1}. ${item.q}</span>
+        <span class="qa-arrow">▼</span>
+      </div>
+      <div class="qa-answer">${item.a}</div>
+    </div>`;
+  });
+}
+
+function toggleQA(i) {
+  document.getElementById('qa-' + i).classList.toggle('open');
+}
+</script>
+</body>
+</html>
