@@ -1,2 +1,3 @@
-# Virtual_Memory_Simulator
-An interactive, browser-based simulator for virtual memory concepts — FIFO, LRU, Optimal page replacement, segmentation, and fragmentation — with step-by-step visualization and real-time analytics.
+Virtual Memory Management Simulator is a browser-based educational tool for understanding core Operating System memory management concepts through interactive, animated simulation.
+Built as a college-level OS project, the simulator covers paging with demand paging behavior, three classical page replacement algorithms (FIFO, LRU, and Bélády's Optimal), memory segmentation with base/limit address tables and segmentation fault detection, and fixed-partition memory fragmentation with internal/external analysis. Every simulation runs step-by-step with animated frame boxes, a synchronized step-history table, cumulative fault trend charts, and a best-algorithm comparison panel.
+No server. No build step. Open index.html and run.
