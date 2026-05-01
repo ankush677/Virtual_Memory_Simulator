@@ -7,7 +7,6 @@ An interactive web-based simulator to visualize paging, page replacement algorit
 This project helps users understand how memory management works in OS through step-by-step simulation and visualization.
 
 It includes:
-
 Paging Simulator (FIFO, LRU, Optimal)
 Segmentation Visualization
 Fragmentation Analysis
