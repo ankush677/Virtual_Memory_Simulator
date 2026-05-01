@@ -31,7 +31,7 @@ Base address
 Limit
 Memory allocation
 Detect segmentation faults
-🔹 Fragmentation
+🔹 Fragmentatio
 Simulate:
 Internal Fragmentation
 External Fragmentation
