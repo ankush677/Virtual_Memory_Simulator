@@ -1,7 +1,6 @@
 🧠 Virtual Memory Management Simulator (VMMS)
 
 An interactive web-based simulator to visualize paging, page replacement algorithms, segmentation, and memory fragmentation in Operating Systems.
-
 🚀 Overview
 This project helps users understand how memory management works in OS through step-by-step simulation and visualization.
 It includes:
