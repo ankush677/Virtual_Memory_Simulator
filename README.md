@@ -61,9 +61,7 @@ Chart.js (for visualization)
 Download or clone the repository:
 git clone https://github.com/your-username/vmms.git
 Open index.html in your browser
-
 👉 No installation required
-
 📊 Example Input
 Frames = 3
 Reference String = 7 0 1 2 0 3 0 4 2
