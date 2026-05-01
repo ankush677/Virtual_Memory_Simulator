@@ -92,8 +92,3 @@ Add more algorithms (LFU, Clock)
 Add real-time performance metrics
 Improve UI animations
 Add user authentication for saving simulations
-👨‍💻 Author
-
-Ankush Sharma
-B.Tech CSE
-Lovely Professional University
